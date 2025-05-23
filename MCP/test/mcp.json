@@ -1,0 +1,25 @@
+{
+    "mcpServers": {
+        "weather_calculator": {
+            "command": "/opt/anaconda3/envs/aiagent/bin/python",
+            "args": [
+                "/Users/taoxingjian/Desktop/Knowledge/Large_Language_Model/MCP/MCPServer_test.py"
+            ]
+        }
+    }
+}
+/*
+我们在cline中使用的标准配置
+{
+    "mcpServers": {
+        "time": {
+            "command": "python",
+            "args": [
+                "-m",
+                "mcp_server_time",
+                "--local-timezone=Asia/Shanghai"
+            ]
+        }
+    }
+}
+*/
