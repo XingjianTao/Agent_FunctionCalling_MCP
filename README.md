@@ -1,48 +1,61 @@
-# Agent_FunctionCalling_MCP
+# Agent、Function Calling和MCP知识库总览
 
-这个知识库包含关于大语言模型(LLM)的几个核心技术领域的详细笔记和代码实现。主要分为三个核心部分：Agent、Function Calling和MCP，按照学习发展顺序排列。
+这个知识库包含关于大语言模型(LLM)领域中Agent、Function Calling和MCP三个核心技术的详细笔记和代码实现。
 
 ## 项目结构
 
 ```
 .
-├── Agent/               # Agent相关知识和实现
-├── FunctionCalling/     # Function Calling相关知识和实现 
-└── MCP/                 # MCP相关知识和实现
+├── README.md                       # 项目概述
+├── Agent/                          # Agent相关知识和实现
+│   ├── Agent.ipynb                 # Agent交互式笔记本
+│   ├── Agent.md                    # Agent概念和实现文档
+│   ├── Prompt.md                   # Prompt工程指南
+│   └── ReAct.md                    # ReAct模式文档
+├── FunctionCalling/                # Function Calling相关知识和实现
+│   ├── FunctionCalling.ipynb       # Function Calling交互式笔记本
+│   ├── FunctionCalling.md          # Function Calling概念和实现文档
+│   ├── FunctionCalling_Code.py     # Function Calling代码实现
+│   ├── IterativeFunctionCalling.py # 迭代式Function Calling实现
+│   ├── 自动创建ApiSchema.md        # API Schema自动生成指南 
+│   └── attachments/                # 图片附件目录
+│       ├── Function_Calling.png    # Function Calling流程图
+│       └── Function_Calling_Function.png  # 函数调用示例图
+└── MCP/                            # MCP相关知识和实现
+    ├── MCP.ipynb                   # MCP交互式笔记本
+    ├── MCP.md                      # MCP概念和架构文档
+    ├── MCP_Server的创建.ipynb      # MCP服务器创建笔记本
+    ├── MCP_Server的创建.md         # MCP服务器创建指南
+    ├── MCP_Server与客户端（MCP_Client）的交互.ipynb  # 服务器与客户端交互笔记本
+    ├── MCP_Server与客户端（MCP_Client）的交互.md     # 服务器与客户端交互文档
+    ├── 客户端（MCP_Client）与大模型的交互.ipynb     # 客户端与LLM交互笔记本
+    ├── 客户端（MCP_Client）与大模型的交互.md        # 客户端与LLM交互文档
+    ├── Cline客户端的system_prompt.md               # Cline客户端系统提示词
+    ├── test/                                      # 测试代码目录
+    │   ├── MCPServer_test.py                      # MCP服务器测试代码
+    │   ├── mcp.json                               # MCP配置文件
+    │   └── minimaxMCP.html                        # MiniMax MCP Web示例
+    └── attachments/                               # 图片附件目录
+        └── ...                                    # 各种流程图和截图
 ```
 
-## Agent (智能代理)
-
-Agent是封装了大语言模型、工具和记忆的结构化框架，通过组合这些元素来完成复杂任务。
-
+## **[[Agent]]**  
+   - Agent 是封装了大语言模型 + Tools + Memory 等的调度框架，在代码中是一个类，Agent可以
 ### 核心文档
-- Agent - Agent的概念、构建流程和示例实现
-- Prompt - Prompt的概念、分类、学习资源
-- ReAct - ReAct提示词模版
+- [[Agent]] - Agent的概念、构建流程和示例实现
+- [[Prompt]] - Prompt的概念、分类、学习资源
+- [[ReAct]] - ReAct提示词模版
 
-## Function Calling (函数调用)
-
-Function Calling是大语言模型能够调用外部函数的能力，实现与外部世界的交互。
-
-### 核心内容
-
-- 函数调用的基本概念和OpenAI框架下的实现
-- 自动为函数生成API Schema的方法
-- API Schema定义
-- 函数说明的自动生成
-- 函数调用流程
-- 迭代式函数调用
-
-## MCP (Model Context Protocol，模型上下文协议)
-
-MCP是一种开放、模型无关的应用层通信协议，旨在统一不同客户端调用工具的接口。
-
-### 核心内容
-
-- MCP的基本概念、痛点和架构
-- 如何创建MCP服务器
-- 服务器与客户端的交互流程
-- 客户端如何与LLM交互 
+## **工具调用**  
+### 概述
+日常使用大模型的工具调用功能通常通过客户端，客户端是大模型和本地工具之间的桥梁。
+- **客户端-大模型**：客户端可以告诉大模型工具内容以及调教大模型具有工具调用功能，这一过程可以用System [[Prompt]]实现，后来为了规范化，开发出来[[FunctionCalling]]的技术。
+- **客户端-tools**：客户端可以解析大模型发送的调用工具的指令，让本地或者在线工具执行，这一过程没有统一的规范，是MCP协议打包了这一过程并规范化。
+### 客户端-大模型
+   - **方式1：System [[Prompt]]驱动**  
+     - 使用提示词模板如[[ReAct]]，内容包含：可用工具列表、迭代式调用步骤说明  
+   - **方式2：[[FunctionCalling]]**  
+     - 核心过程：模型（经过训练的）接受结构化的json格式的函数声明（api schema），生成结构化的json格式的函数调用指令 
      - 模型需要使用了上述输入输出的文本的训练集做微调 
      - 核心文件：
        - [[FunctionalCalling]] - 函数调用的基本概念和OpenAI框架下的实现
@@ -67,23 +80,5 @@ MCP是一种开放、模型无关的应用层通信协议，旨在统一不同�
         - [[MCP_Server与客户端（MCP_Client）的交互]] - 服务器与客户端的交互流程
         - [[客户端（MCP_Client）与大模型的交互]] - 客户端如何与LLM交互
             - [[Cline客户端的system_prompt]] - Cline客户端使用的系统提示词
-      - [[test/minimaxMCP.html]] - minimax MCP 生成三体介绍网页的示例
-
-## 学习路径建议
-
-1. **入门级**：首先了解Agent概念，这是LLM应用的核心框架
-2. **进阶**：学习Function Calling基础，理解LLM如何调用外部函数
-3. **高级**：深入MCP协议，理解跨模型、跨客户端的工具调用架构
-
-## 常见应用场景
-
-1. **信息检索增强**：使用Function Calling调用搜索API
-2. **智能助手开发**：基于Agent架构构建具有工具使用能力的智能助手
-3. **跨平台工具集成**：使用MCP协议实现一次开发、多平台复用的工具
-
-## 相关资源
-
-- [OpenAI Function Calling官方文档](https://platform.openai.com/docs/guides/function-calling)
-- [LangChain Agent框架](https://python.langchain.com/docs/modules/agents/)
-- [Model Context Protocol官方规范](https://github.com/modelcontextprotocol/spec)
-
+      - [[test/minimaxMCP.html]] - minimax MCP 生成三体介绍网页的示例 
+ 
