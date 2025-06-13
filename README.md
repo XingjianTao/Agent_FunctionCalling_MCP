@@ -40,7 +40,7 @@
 ```
 
 ## **[[Agent]]**  
-   - Agent 是封装了大语言模型 + Tools + Memory 等的调度框架，在代码中是一个类，Agent可以
+   - Agent 是封装了大语言模型 + Tools + Memory 等的调度框架，在代码中是一个类。
 ### 核心文档
 - [[Agent]] - Agent的概念、构建流程和示例实现
 - [[Prompt]] - Prompt的概念、分类、学习资源
